@@ -269,7 +269,8 @@
     .card-button,
     .thumb-button,
     .close-button,
-    .link-button {
+    .link-button,
+    .treeworld-button {
       cursor: pointer;
       border: 0;
       transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
@@ -611,6 +612,39 @@
     .link-button:hover {
       background: rgba(205, 49, 49, 0.14);
       color: #871b1b;
+    }
+
+    .treeworld-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(40, 116, 85, 0.18);
+      background: rgba(40, 116, 85, 0.08);
+      color: var(--accent-strong);
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .treeworld-button:hover {
+      background: rgba(40, 116, 85, 0.14);
+      color: #174a36;
+    }
+
+    .muted-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(33, 50, 41, 0.08);
+      background: rgba(92, 99, 94, 0.08);
+      color: var(--muted);
+      font-weight: 700;
+      white-space: nowrap;
     }
 
     .empty-state {
@@ -1344,6 +1378,121 @@
       }
     ];
 
+    const treeWorldLinks = {
+      "sweet-acacia": {
+        url: "https://treeworldwholesale.com/product/acacia-farnesiana-2/",
+        match: "exact",
+        note: "TreeWorld lists this as Sweet Acacia / Needle Bush."
+      },
+      "pond-apple": {
+        url: "https://treeworldwholesale.com/product/annona-glabra-pond-apple-2/",
+        match: "exact",
+        note: ""
+      },
+      "bahama-strongbark": {
+        url: "https://treeworldwholesale.com/product/bourreria-succulenta-strong-bark-2/",
+        match: "closest",
+        note: "Closest TreeWorld match is Strong Bark, but the page is for Bourreria succulenta rather than Bourreria ovata."
+      },
+      "spiny-black-olive": {
+        url: "https://treeworldwholesale.com/product/bucida-buceras-2/",
+        match: "closest",
+        note: "Closest TreeWorld match is Black Olive / Shady Lady, not the smaller Bucida spinosa form."
+      },
+      "wild-cinnamon": {
+        url: "https://treeworldwholesale.com/product/canella-winterana-bush-tree-2/",
+        match: "exact",
+        note: "TreeWorld uses Cinnamon Bark / Pepper Cinnamon as the common name."
+      },
+      "jamaican-caper": {
+        url: "https://treeworldwholesale.com/product/capparis-cynophalophora-jamaican-caper/",
+        match: "exact",
+        note: "TreeWorld spells the botanical name as Capparis Cynophalophora on the product page."
+      },
+      "silver-buttonwood": {
+        url: "https://treeworldwholesale.com/product/conocarpus-erectus-variety-sericeus-variety-silver-buttonwood-2/",
+        match: "exact",
+        note: ""
+      },
+      "orange-geiger": {
+        url: "https://treeworldwholesale.com/product/cordia-sebestena-orange-geiger-2/",
+        match: "exact",
+        note: ""
+      },
+      "stopper-species": {
+        url: "https://treeworldwholesale.com/product/eugenia-axillaris-white-stopper/",
+        match: "closest",
+        note: "TreeWorld lists stopper species separately; this White Stopper page is the closest credible grouped match."
+      },
+      "lignum-vitae": {
+        url: "https://treeworldwholesale.com/product/guaiacum-sanctum-florida-lignum-vitae/",
+        match: "exact",
+        note: "TreeWorld uses Florida Lignum Vitae / Florida Lignum."
+      },
+      "crabwood": {
+        url: "https://treeworldwholesale.com/product/gymnanthes-lucida-crabwood/",
+        match: "exact",
+        note: ""
+      },
+      "joewood": {
+        url: "https://treeworldwholesale.com/product/jacquinia-keyensis-syn-j-bahamensis-2/",
+        match: "exact",
+        note: "TreeWorld also notes the synonym Jacquinia bahamensis."
+      },
+      "braceletwood": {
+        url: "https://treeworldwholesale.com/product/jacquinia-keyensis-syn-j-bahamensis-2/",
+        match: "closest",
+        note: "No Braceletwood page was found; TreeWorld's closest live match is Jacquinia keyensis."
+      },
+      "jatropha": {
+        url: "https://treeworldwholesale.com/product/jatropha-integerrima-peregrina/",
+        match: "exact",
+        note: "TreeWorld uses Peregrina as the common name."
+      },
+      "crape-myrtle": {
+        url: "https://treeworldwholesale.com/product/lagerstroemia-indica-natchez-crape-myrtle/",
+        match: "closest",
+        note: "TreeWorld appears to list crape myrtle by cultivar rather than with a single species page."
+      },
+      "japanese-privet": {
+        url: "https://treeworldwholesale.com/product/ligustrum-japonicum-var-recurvifolium-2/",
+        match: "closest",
+        note: "Closest live match is Ligustrum japonicum var. recurvifolium, listed as Japanese Ligustrum / Japanese Privet."
+      },
+      "simpson-stopper": {
+        url: "https://treeworldwholesale.com/product/myrcianthes-fragrans-simpson-stopper/",
+        match: "exact",
+        note: ""
+      },
+      "wax-myrtle": {
+        url: null,
+        match: "none",
+        note: "No credible live TreeWorld product page was found for wax myrtle."
+      },
+      "glaucous-cassia": {
+        url: "https://treeworldwholesale.com/product/senna-surattensis-2/",
+        match: "exact",
+        note: "TreeWorld also mentions Cassia glauca as another name."
+      },
+      "sweet-viburnum": {
+        url: null,
+        match: "none",
+        note: "No credible live TreeWorld product page was found for sweet viburnum."
+      },
+      "wild-lime": {
+        url: "https://treeworldwholesale.com/product/zanthoxylum-fagara-wild-lime/",
+        match: "exact",
+        note: ""
+      }
+    };
+
+    trees.forEach(tree => {
+      const treeWorld = treeWorldLinks[tree.id] || {};
+      tree.treeWorldUrl = treeWorld.url || null;
+      tree.treeWorldMatch = treeWorld.match || "none";
+      tree.treeWorldNote = treeWorld.note || "";
+    });
+
     const state = {
       search: "",
       risk: "All",
@@ -1382,6 +1531,14 @@
     function youtubeSearchUrl(tree) {
       const query = `${tree.commonName} ${tree.botanicalName} tree`;
       return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+    }
+
+    function treeWorldLabel(tree) {
+      return tree.treeWorldMatch === "exact" ? "TreeWorld" : "TreeWorld match";
+    }
+
+    function treeWorldModalLabel(tree) {
+      return tree.treeWorldMatch === "exact" ? "Open TreeWorld page" : "Open closest TreeWorld match";
     }
 
     function filteredTrees() {
@@ -1428,8 +1585,9 @@
             <p class="foundation-note">${tree.note}</p>
 
             <div class="card-footer">
-              <span class="photo-note">3 example photos shown plus a YouTube search link</span>
+              <span class="photo-note">3 example photos, a YouTube search, and a TreeWorld reference when available</span>
               <div class="card-actions">
+                ${tree.treeWorldUrl ? `<a class="treeworld-button" href="${tree.treeWorldUrl}" target="_blank" rel="noopener noreferrer">${treeWorldLabel(tree)}</a>` : `<span class="muted-pill">No TreeWorld page</span>`}
                 <a class="link-button" href="${youtubeSearchUrl(tree)}" target="_blank" rel="noopener noreferrer">YouTube</a>
                 <button class="card-button" type="button" data-open-tree="${tree.id}">Open gallery</button>
               </div>
@@ -1524,6 +1682,18 @@
                 <a class="source-link" href="${photo.source}" target="_blank" rel="noopener noreferrer">Photo ${index + 1}</a>
               `).join("")}
             </div>
+          </div>
+
+          <div>
+            <h3>TreeWorld Wholesale</h3>
+            ${tree.treeWorldUrl ? `
+              <div class="source-list">
+                <a class="treeworld-button" href="${tree.treeWorldUrl}" target="_blank" rel="noopener noreferrer">${treeWorldModalLabel(tree)}</a>
+              </div>
+              ${tree.treeWorldNote ? `<p class="credit-line">${tree.treeWorldNote}</p>` : ""}
+            ` : `
+              <p class="credit-line">${tree.treeWorldNote || "No credible TreeWorld page was found for this species."}</p>
+            `}
           </div>
 
           <div>
