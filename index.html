@@ -268,7 +268,8 @@
     .primary-button,
     .card-button,
     .thumb-button,
-    .close-button {
+    .close-button,
+    .link-button {
       cursor: pointer;
       border: 0;
       transition: transform 180ms ease, background 180ms ease, color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
@@ -563,6 +564,14 @@
       margin-top: 2px;
     }
 
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
     .photo-note {
       color: var(--muted);
       font-size: 0.9rem;
@@ -582,6 +591,26 @@
     .card-button:hover,
     .primary-button:hover {
       background: var(--accent-strong);
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(205, 49, 49, 0.18);
+      background: rgba(205, 49, 49, 0.08);
+      color: #a12626;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .link-button:hover {
+      background: rgba(205, 49, 49, 0.14);
+      color: #871b1b;
     }
 
     .empty-state {
@@ -1350,6 +1379,11 @@
       return src.replace("/large", "/medium");
     }
 
+    function youtubeSearchUrl(tree) {
+      const query = `${tree.commonName} ${tree.botanicalName} tree`;
+      return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+    }
+
     function filteredTrees() {
       return trees.filter(tree => {
         const haystack = `${tree.commonName} ${tree.botanicalName}`.toLowerCase();
@@ -1394,8 +1428,11 @@
             <p class="foundation-note">${tree.note}</p>
 
             <div class="card-footer">
-              <span class="photo-note">3 example photos shown</span>
-              <button class="card-button" type="button" data-open-tree="${tree.id}">Open gallery</button>
+              <span class="photo-note">3 example photos shown plus a YouTube search link</span>
+              <div class="card-actions">
+                <a class="link-button" href="${youtubeSearchUrl(tree)}" target="_blank" rel="noopener noreferrer">YouTube</a>
+                <button class="card-button" type="button" data-open-tree="${tree.id}">Open gallery</button>
+              </div>
             </div>
           </div>
         </article>
@@ -1486,6 +1523,13 @@
               ${tree.gallery.map((photo, index) => `
                 <a class="source-link" href="${photo.source}" target="_blank" rel="noopener noreferrer">Photo ${index + 1}</a>
               `).join("")}
+            </div>
+          </div>
+
+          <div>
+            <h3>See more video examples</h3>
+            <div class="source-list">
+              <a class="link-button" href="${youtubeSearchUrl(tree)}" target="_blank" rel="noopener noreferrer">Search ${tree.commonName} on YouTube</a>
             </div>
           </div>
         </div>
