@@ -236,6 +236,10 @@
       z-index: 20;
     }
 
+    .toolbar-secondary {
+      display: contents;
+    }
+
     .field {
       display: flex;
       align-items: center;
@@ -284,6 +288,10 @@
       color: var(--ink);
       border: 1px solid var(--line);
       font-weight: 700;
+    }
+
+    .mobile-filter-toggle {
+      display: none;
     }
 
     .ghost-button:hover,
@@ -899,6 +907,64 @@
     }
 
     @media (max-width: 720px) {
+      .toolbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        padding: 10px;
+        top: 8px;
+        border-radius: 18px;
+      }
+
+      .toolbar-search {
+        grid-column: 1 / 2;
+      }
+
+      .mobile-filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 12px;
+        border-radius: 12px;
+        font-size: 0.88rem;
+      }
+
+      .toolbar-secondary {
+        grid-column: 1 / -1;
+        display: none;
+        grid-template-columns: 1fr 1fr auto;
+        gap: 8px;
+      }
+
+      .toolbar-secondary.is-open {
+        display: grid;
+      }
+
+      .field,
+      .ghost-button {
+        min-height: 42px;
+        border-radius: 12px;
+      }
+
+      .field {
+        padding: 0 10px;
+      }
+
+      .field svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .field input,
+      .field select,
+      .ghost-button {
+        font-size: 0.88rem;
+      }
+
+      .ghost-button {
+        padding: 0 12px;
+      }
+
       .shell {
         width: min(calc(100% - 20px), var(--max));
         padding-top: 20px;
@@ -993,30 +1059,34 @@
     </header>
 
     <section class="toolbar fade-up" style="animation-delay: 120ms;" aria-label="Tree filters">
-      <label class="field" for="search-input">
+      <label class="field toolbar-search" for="search-input">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
         <input id="search-input" type="search" placeholder="Search by common or botanical name">
       </label>
 
-      <label class="field" for="risk-filter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 4.9v6.2C21 18 16.8 21 12 22c-4.8-1-9-4-9-8.9V6.9L12 2Z"></path><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
-        <select id="risk-filter">
-          <option value="All">All root risk levels</option>
-          <option value="Low">Low risk</option>
-          <option value="Moderate">Moderate risk</option>
-        </select>
-      </label>
+      <button id="mobile-filter-toggle" class="ghost-button mobile-filter-toggle" type="button" aria-expanded="false" aria-controls="toolbar-secondary">Filters</button>
 
-      <label class="field" for="native-filter">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
-        <select id="native-filter">
-          <option value="All">All origin types</option>
-          <option value="Native">Florida native</option>
-          <option value="Introduced">Introduced</option>
-        </select>
-      </label>
+      <div class="toolbar-secondary" id="toolbar-secondary">
+        <label class="field" for="risk-filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 9 4.9v6.2C21 18 16.8 21 12 22c-4.8-1-9-4-9-8.9V6.9L12 2Z"></path><path d="M12 8v5"></path><path d="M12 16h.01"></path></svg>
+          <select id="risk-filter">
+            <option value="All">All root risk levels</option>
+            <option value="Low">Low risk</option>
+            <option value="Moderate">Moderate risk</option>
+          </select>
+        </label>
 
-      <button id="clear-filters" class="ghost-button" type="button">Clear filters</button>
+        <label class="field" for="native-filter">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path></svg>
+          <select id="native-filter">
+            <option value="All">All origin types</option>
+            <option value="Native">Florida native</option>
+            <option value="Introduced">Introduced</option>
+          </select>
+        </label>
+
+        <button id="clear-filters" class="ghost-button" type="button">Clear filters</button>
+      </div>
     </section>
 
     <section class="meta-strip fade-up" style="animation-delay: 180ms;">
@@ -1509,6 +1579,8 @@
     const emptyState = document.getElementById("empty-state");
     const clearFilters = document.getElementById("clear-filters");
     const emptyClear = document.getElementById("empty-clear");
+    const mobileFilterToggle = document.getElementById("mobile-filter-toggle");
+    const toolbarSecondary = document.getElementById("toolbar-secondary");
     const modal = document.getElementById("tree-modal");
     const modalContent = document.getElementById("modal-content");
     const closeModal = document.getElementById("close-modal");
@@ -1539,6 +1611,13 @@
 
     function treeWorldModalLabel(tree) {
       return tree.treeWorldMatch === "exact" ? "Open TreeWorld page" : "Open closest TreeWorld match";
+    }
+
+    function setMobileFiltersOpen(isOpen) {
+      if (!mobileFilterToggle || !toolbarSecondary) return;
+      toolbarSecondary.classList.toggle("is-open", isOpen);
+      mobileFilterToggle.setAttribute("aria-expanded", String(isOpen));
+      mobileFilterToggle.textContent = isOpen ? "Hide" : "Filters";
     }
 
     function filteredTrees() {
@@ -1750,6 +1829,19 @@
 
     clearFilters.addEventListener("click", resetFilters);
     emptyClear.addEventListener("click", resetFilters);
+
+    if (mobileFilterToggle) {
+      mobileFilterToggle.addEventListener("click", () => {
+        const isOpen = toolbarSecondary.classList.contains("is-open");
+        setMobileFiltersOpen(!isOpen);
+      });
+    }
+
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 720) {
+        setMobileFiltersOpen(false);
+      }
+    });
 
     grid.addEventListener("click", event => {
       const trigger = event.target.closest("[data-open-tree]");
